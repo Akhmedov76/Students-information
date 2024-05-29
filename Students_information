@@ -1,0 +1,102 @@
+students = dict()
+
+
+def check_student(student_name: str):
+    if student_name in students.keys():
+        return True
+    return False
+
+
+def add_student():
+    name = input('Enter your name: ')
+    if check_student(name):
+        print("This student already exists")
+        return add_student()
+    else:       
+        math = int(input('Enter grade from math: '))
+        history = int(input('Enter grade from history: '))
+        music = int(input('Enter grade from music: '))
+
+        students[name] = {
+            'math': math,
+            'history': history,
+            'music': music
+        }
+        return show_menu()
+    
+
+def search_student():
+    name = input("Enter student name: ")
+    if check_student(name):
+        for student in students.items():
+            if student[0] == name:
+                print(student[1])
+                show_menu()
+    else:
+        print("There is no such kind of student")
+        search_student()
+
+    
+def update_student_grade():
+    name = input("Enter student name: ")
+    if check_student(name):
+        subject = input("Enter subject name: ")
+        if subject not in ('math', 'history', 'music'):
+            print("There is no such kind of subject.")
+            update_student_grade()
+        else:
+            grade = int(input("Enter new grade: "))
+            students[name][subject] = grade
+            show_menu()
+    
+    else:
+        print("There is no such kind of student")
+        update_student_grade()
+
+    
+def delete_student():
+    name = input("Enter student name: ")
+    if check_student(name):
+        students.pop(name)
+        show_menu()
+    else:
+        print("There is no such kind of student")
+        delete_student()
+
+
+def show_students():
+    for user in students.items():
+        show_text = f"{user[0]}:\t {user[1]}"
+        print(show_text)
+    return show_menu()
+
+
+def show_menu():
+    text = """
+    1. Add new student | Subjects: name: math, music, history
+    2. Search student with name
+    3. Update subject grade
+    4. Delete student
+    5. Show all students
+    6. Exit
+
+    """
+    print(text)
+    user_input = int(input("Choose from menu: "))
+    if user_input == 1:
+        add_student()
+    elif user_input == 2:
+        search_student()
+    elif user_input == 3:
+        update_student_grade()
+    elif user_input == 4:
+        delete_student()
+    elif user_input == 5:
+        show_students()
+    else:
+        print("Good bye !")
+        return
+
+
+if __name__ == '__main__':
+    show_menu()
